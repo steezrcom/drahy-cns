@@ -1,8 +1,8 @@
-# drahy
+# drahy-cns
 
-Web archive of an old neuroanatomy teaching project: 30 interactive SWF animations and quizzes covering the main sensory and motor pathways and cerebellar circuits. Plays in 2026 browsers via [Ruffle](https://ruffle.rs), the open-source Flash emulator (Rust + WebAssembly).
+Web archive of an old neuroanatomy teaching project: 30 interactive SWF animations and quizzes covering the main sensory and motor pathways and cerebellar circuits. Plays in modern browsers via [Ruffle](https://ruffle.rs), the open-source Flash emulator (Rust + WebAssembly).
 
-Source code: <https://github.com/steezrcom/drahy-cns>. Live mirror: <https://drahy.steezr.cloud>.
+**Live:** <https://drahy.steezr.cloud>
 
 ## Attribution
 
@@ -15,84 +15,70 @@ The original animations were authored 2007-2012 at the **Institute of Anatomy, 1
 
 The work was funded under FRVŠ projects (Fond rozvoje vysokých škol).
 
-Original page (still online, but the SWFs no longer play in modern browsers): <https://anat.lf1.cuni.cz/materialy/drahyCZ.php>
-
+Original landing page (still online; SWFs no longer play in modern browsers): <https://anat.lf1.cuni.cz/materialy/drahyCZ.php>
 Source archive: <https://anat.lf1.cuni.cz/materialy/drahyCNS.zip>
 
-This deployment is an unofficial mirror hosted at **drahy.steezr.cloud** to keep the materials usable after Adobe Flash deprecation. Hosting is provided pro bono by **steezr s. r. o.** for the benefit of medical students, with no claim to compensation. All copyright remains with the Institute of Anatomy, 1st Faculty of Medicine, Charles University. If you are from the institute and want this taken down, moved, or hosted under your own domain, contact johnny@steezr.com.
-
-## What's in here
-
-```
-public/                static site
-  index.html           landing page, lists all 30 items
-  player.html          generic player page (?id=<slug>)
-  data.js              slug → title → file mapping
-  style.css
-  swf/drahy/           12 SWFs (sensory/motor pathways + 3 quizzes)
-  swf/propriocepce/    18 SWFs (proprioception, cerebellar circuits + 7 quizzes)
-
-Dockerfile             multi-stage: npm-installs ruffle + geist, copies into nginx:alpine
-nginx.conf             listens on :5000, /healthz, cache headers
-stage-swfs.sh          fetches drahyCNS.zip from anat.lf1.cuni.cz and refreshes public/swf/
-```
-
-`public/swf/` is the source of truth for what the site serves. The original archive is not committed; if you need to re-stage from upstream, run `./stage-swfs.sh`.
+This repository is an unofficial preservation mirror. The deployment at `drahy.steezr.cloud` is hosted pro bono by [steezr s. r. o.](https://steezr.com) for the benefit of medical students, with no claim to compensation. All copyright in the SWFs remains with the Institute. If you are from the Institute and want this taken down, moved, or hosted under your own domain, contact <johnny@steezr.com>.
 
 ## Develop locally
 
-```bash
-docker build -t drahy .
-docker run --rm -p 5557:5000 drahy
-open http://localhost:5557
+Requires Docker. From a fresh clone:
+
+```sh
+make dev    # build the image, run on http://localhost:5557
+make test   # curl smoke test against the running container
+make logs   # follow nginx logs
+make stop   # tear down
 ```
 
-If you change `data.js`, `nginx.conf`, or HTML/CSS, just rebuild. SWFs are cached aggressively in the browser (immutable, 1 year), so if you replace a SWF in place during dev, hard-reload (Cmd+Shift+R).
+`make help` lists every target.
+
+## Project layout
+
+```
+public/
+  index.html           landing page, lists all 30 items
+  player.html          generic player; reads slug from URL path or ?id=
+  data.js              slug → title → file mapping
+  style.css            single-file design system
+  swf/                 30 SWFs in clean, slugged paths
+  fonts/, ruffle/      copied in by Dockerfile (not checked in)
+  favicon.svg, og-image.svg, og-image.png, 404.html
+
+Dockerfile             multi-stage; npm-installs ruffle + geist into nginx:alpine
+nginx.conf             listens on :5000, /healthz, clean URLs, no-cache for HTML
+stage-swfs.sh          fetches drahyCNS.zip from anat.lf1.cuni.cz and refreshes public/swf/
+Makefile               developer commands
+```
 
 ## Refresh from upstream
 
 If `drahyCNS.zip` on `anat.lf1.cuni.cz` is updated, re-stage:
 
-```bash
-./stage-swfs.sh
+```sh
+make stage
 ```
 
-The script downloads the zip into a tempdir, copies the SWFs into `public/swf/` under their slugs, and cleans up. Edit the `MAP` array if the upstream archive adds, removes, or renames a file. Update `public/data.js` to match, then rebuild.
+The script downloads the zip into a tempdir, copies the SWFs into `public/swf/` under their slugs, and cleans up. Edit the `MAP` array in `stage-swfs.sh` if upstream adds, removes, or renames a file. Update `public/data.js` to match, then rebuild.
 
-## Deploy to Dokku
+## Deploy
 
-One-time on the Dokku host:
+The image is a stock `nginx:alpine` exposing port `5000`, with a `/healthz` endpoint. Drop it on any container host. We deploy via Dokku:
 
-```bash
-dokku apps:create drahy
-dokku domains:set drahy drahy.steezr.cloud
-dokku letsencrypt:set drahy email johnny@steezr.com
-dokku letsencrypt:enable drahy
-```
-
-From this machine:
-
-```bash
-git init
-git add .
-git commit -m "feat: initial flash archive"
-git remote add dokku dokku@<host>:drahy
+```sh
 git push dokku main
 ```
 
-Then point a CNAME from `drahy.steezr.cloud` to the Dokku host.
-
-Dokku detects the Dockerfile, builds, and routes public 80/443 to the container's internal :5000. Health check hits `/healthz`.
-
-Image is ~60 MB: nginx:alpine + 53 MB SWFs + ~2 MB Ruffle.
-
-## Pin the Ruffle version
-
-The Dockerfile installs `@ruffle-rs/ruffle@latest` at build time, so each rebuild may pull a newer Ruffle. To pin, replace `@latest` with a specific version (see [npm](https://www.npmjs.com/package/@ruffle-rs/ruffle)).
+A reasonable health check is `GET /healthz` returning `ok`. URL routing is handled in `nginx.conf` (`try_files` falls back to `/player.html`, which reads the slug from the URL path).
 
 ## Notes
 
-- All SWFs are self-contained (verified with `strings` for `loadMovie` / external URLs). No companion files or runtime fetches.
-- HTML/CSS/JS are served `Cache-Control: no-cache, must-revalidate` so updates roll out immediately. SWFs and WebAssembly are immutable for a year.
+- All SWFs are self-contained (no `loadMovie` / external URL fetches). Image stays around 60 MB: nginx:alpine + 53 MB SWFs + ~2 MB Ruffle + ~70 KB Geist.
+- HTML/CSS/JS are served `Cache-Control: no-cache, must-revalidate` so updates roll out immediately. SWFs, fonts, and WebAssembly are immutable for a year.
 - Stage size of every SWF is 800×600. The player container caps at 1024×768 (4:3) and Ruffle scales up cleanly.
-- Some content has bilingual CZ/EN toggles inside the SWF itself ("English version" button).
+- Some SWFs have a built-in `English version` toggle. The wrapper UI is Czech only.
+- Source code: MIT (see [LICENSE](LICENSE)). The SWFs themselves are © Anatomický ústav 1. LF UK and are not covered by the MIT grant.
+
+## Contributing
+
+This is a small preservation project. Issues and PRs welcome on the wrapper (UI, accessibility, deployment, build). The SWF content lives upstream at `anat.lf1.cuni.cz` and isn't editable here. For content corrections (wrong label, missing slide, clinical errors), the right place is the Institute itself.

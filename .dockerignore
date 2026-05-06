@@ -1,6 +1,10 @@
 .git
 .gitignore
+.github
 .DS_Store
 **/.DS_Store
 README.md
+LICENSE
+Makefile
 stage-swfs.sh
+public/og-image.svg

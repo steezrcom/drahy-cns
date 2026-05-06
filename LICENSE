@@ -1,0 +1,40 @@
+MIT License
+
+Copyright (c) 2026 steezr s. r. o.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+THIRD-PARTY CONTENT
+
+The MIT license above covers the wrapper source code in this repository
+(HTML, CSS, JavaScript, Dockerfile, nginx config, scripts, README, design
+assets created for this project).
+
+It does NOT cover the SWF animation files under `public/swf/`. Those files
+are © Anatomický ústav 1. LF UK (Institute of Anatomy, 1st Faculty of
+Medicine, Charles University in Prague), authored by dr. Brabec, doc. Naňka,
+dr. Němcová and prof. Petrovický (2007–2012, FRVŠ projects). They are
+mirrored from <https://anat.lf1.cuni.cz/materialy/drahyCNS.zip>.
+
+For redistribution rights, classroom use, or modifications of the SWF
+content, contact the Institute directly. This repository serves only as an
+unofficial mirror to keep the materials playable after Adobe Flash
+deprecation, with no claim to the underlying rights.
