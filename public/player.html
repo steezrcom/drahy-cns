@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Přehrávač</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="player-page">
+  <header class="player-header">
+    <a class="back" href="index.html">← Zpět</a>
+    <h1 id="title">Načítání</h1>
+    <span class="spacer"></span>
+  </header>
+
+  <div class="player-stage">
+    <div id="ruffle-mount"></div>
+  </div>
+
+  <div id="missing" class="notice" hidden>
+    Položka nebyla nalezena. <a href="index.html">Zpět na obsah.</a>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="ruffle/ruffle.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    let item = null;
+    for (const key of Object.keys(window.DATA)) {
+      item = window.DATA[key].items.find(i => i.id === id);
+      if (item) break;
+    }
+
+    const titleEl = document.getElementById("title");
+    const mount = document.getElementById("ruffle-mount");
+    const missing = document.getElementById("missing");
+
+    if (!item) {
+      titleEl.textContent = "Nenalezeno";
+      mount.parentElement.remove();
+      missing.hidden = false;
+    } else {
+      document.title = item.title;
+      titleEl.textContent = item.title;
+
+      window.RufflePlayer = window.RufflePlayer || {};
+      const ruffle = window.RufflePlayer.newest();
+      const player = ruffle.createPlayer();
+      mount.appendChild(player);
+      player.load({
+        url: item.file,
+        autoplay: "on",
+        unmuteOverlay: "hidden",
+        backgroundColor: "#000000",
+        scale: "showAll",
+        wmode: "transparent",
+        letterbox: "on"
+      });
+    }
+  </script>
+</body>
+</html>

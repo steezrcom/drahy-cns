@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dráhy a cerebellární okruhy</title>
+  <meta name="description" content="Archiv interaktivních animací a kvízů z neuroanatomie. Originál Anatomického ústavu 1. LF UK (dr. Brabec, doc. Naňka, dr. Němcová, prof. Petrovický, 2007–2012). Senzitivní a motorické dráhy, propriocepce, cerebellární okruhy.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="masthead">
+      <p class="eyebrow">Anatomický ústav 1. LF UK</p>
+      <h1>Dráhy <span class="amp">&amp;</span> cerebellární okruhy</h1>
+      <p class="lede">Třicet interaktivních animací a kvízů z neuroanatomie. Vytvořil kolektiv učitelů Anatomického ústavu 1.&nbsp;LF UK (dr.&nbsp;Brabec, doc.&nbsp;Naňka, dr.&nbsp;Němcová a prof.&nbsp;Petrovický) v rámci projektů FRVŠ v letech 2007&#8211;2012.</p>
+    </header>
+
+    <main id="parts"></main>
+
+    <footer class="colophon">
+      <p>© <a href="https://anat.lf1.cuni.cz/" target="_blank" rel="noopener">Anatomický ústav 1. LF UK</a>. Originál: <a href="https://anat.lf1.cuni.cz/materialy/drahyCZ.php" target="_blank" rel="noopener">drahyCZ.php</a>.</p>
+      <p>Tento archivní mirror přehrává původní SWF soubory v moderním prohlížeči pomocí <a href="https://ruffle.rs" target="_blank" rel="noopener">Ruffle</a>.</p>
+      <p>Provoz hradí pro bono <a href="https://steezr.com" target="_blank" rel="noopener">steezr&nbsp;s.&nbsp;r.&nbsp;o.</a>, aby tento výukový materiál zůstal dostupný studentům medicíny i po ukončení podpory Adobe Flash. Bez nároku na odměnu, autorská práva zůstávají původním autorům.</p>
+    </footer>
+  </div>
+
+  <script src="data.js"></script>
+  <script>
+    const root = document.getElementById("parts");
+    const roman = ["I", "II", "III", "IV"];
+    let pi = 0;
+    for (const key of Object.keys(window.DATA)) {
+      const cat = window.DATA[key];
+      const sec = document.createElement("section");
+      sec.className = "part";
+      sec.innerHTML = `
+        <p class="label">Část ${roman[pi]}</p>
+        <h2>${cat.title}</h2>
+      `;
+      const grid = document.createElement("div");
+      grid.className = "grid";
+      let n = 0;
+      for (const item of cat.items) {
+        n++;
+        const a = document.createElement("a");
+        a.className = "card" + (item.quiz ? " quiz" : "");
+        a.href = `player.html?id=${encodeURIComponent(item.id)}`;
+        a.innerHTML = `
+          <span class="num">${String(n).padStart(2, "0")}</span>
+          <span class="title">${item.title}</span>
+        `;
+        grid.appendChild(a);
+      }
+      sec.appendChild(grid);
+      root.appendChild(sec);
+      pi++;
+    }
+  </script>
+</body>
+</html>
