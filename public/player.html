@@ -4,12 +4,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Přehrávač</title>
+  <meta name="description" content="Přehrávač interaktivní animace z archivu Dráhy a cerebellární okruhy.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Dráhy a cerebellární okruhy">
+  <meta property="og:image" content="https://drahy.steezr.cloud/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://drahy.steezr.cloud/og-image.png">
 </head>
 <body class="player-page">
   <header class="player-header">
-    <a class="back" href="index.html">← Zpět</a>
+    <a class="back" href="/">← Zpět</a>
     <h1 id="title">Načítání</h1>
     <span class="spacer"></span>
   </header>
@@ -18,25 +28,49 @@
     <div id="ruffle-mount"></div>
   </div>
 
+  <nav class="player-nav" id="player-nav" hidden>
+    <a class="prev" id="nav-prev" href="#">
+      <span class="nav-label">← Předchozí</span>
+      <span class="nav-title"></span>
+    </a>
+    <a class="next" id="nav-next" href="#">
+      <span class="nav-label">Další →</span>
+      <span class="nav-title"></span>
+    </a>
+  </nav>
+
   <div id="missing" class="notice" hidden>
-    Položka nebyla nalezena. <a href="index.html">Zpět na obsah.</a>
+    Položka nebyla nalezena. <a href="/">Zpět na obsah.</a>
   </div>
 
-  <script src="data.js"></script>
-  <script src="ruffle/ruffle.js"></script>
+  <script src="/data.js"></script>
+  <script src="/ruffle/ruffle.js"></script>
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get("id");
-
-    let item = null;
-    for (const key of Object.keys(window.DATA)) {
-      item = window.DATA[key].items.find(i => i.id === id);
-      if (item) break;
+    function getId() {
+      const fromQuery = new URLSearchParams(location.search).get("id");
+      if (fromQuery) return fromQuery;
+      const fromPath = location.pathname.replace(/^\/+|\/+$/g, "");
+      if (fromPath && fromPath !== "player.html" && fromPath !== "index.html") return fromPath;
+      return null;
     }
+
+    const id = getId();
+
+    const all = [];
+    for (const key of Object.keys(window.DATA)) {
+      for (const item of window.DATA[key].items) all.push(item);
+    }
+    const idx = all.findIndex(i => i.id === id);
+    const item = idx >= 0 ? all[idx] : null;
+    const prev = idx > 0 ? all[idx - 1] : null;
+    const next = idx >= 0 && idx < all.length - 1 ? all[idx + 1] : null;
 
     const titleEl = document.getElementById("title");
     const mount = document.getElementById("ruffle-mount");
     const missing = document.getElementById("missing");
+    const navEl = document.getElementById("player-nav");
+    const prevEl = document.getElementById("nav-prev");
+    const nextEl = document.getElementById("nav-next");
 
     if (!item) {
       titleEl.textContent = "Nenalezeno";
@@ -46,12 +80,26 @@
       document.title = item.title;
       titleEl.textContent = item.title;
 
+      navEl.hidden = false;
+      if (prev) {
+        prevEl.href = `/${prev.id}`;
+        prevEl.querySelector(".nav-title").textContent = prev.title;
+      } else {
+        prevEl.style.visibility = "hidden";
+      }
+      if (next) {
+        nextEl.href = `/${next.id}`;
+        nextEl.querySelector(".nav-title").textContent = next.title;
+      } else {
+        nextEl.style.visibility = "hidden";
+      }
+
       window.RufflePlayer = window.RufflePlayer || {};
       const ruffle = window.RufflePlayer.newest();
       const player = ruffle.createPlayer();
       mount.appendChild(player);
       player.load({
-        url: item.file,
+        url: "/" + item.file,
         autoplay: "on",
         unmuteOverlay: "hidden",
         backgroundColor: "#000000",
@@ -60,6 +108,17 @@
         letterbox: "on"
       });
     }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      if (e.key === "Escape") {
+        location.href = "/";
+      } else if (e.key === "ArrowLeft" && prev) {
+        location.href = `/${prev.id}`;
+      } else if (e.key === "ArrowRight" && next) {
+        location.href = `/${next.id}`;
+      }
+    });
   </script>
 </body>
 </html>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#15110e"/>
+
+  <text x="80" y="210"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="24" fill="#7a6e60" font-weight="500">Anatomický ústav 1. LF UK</text>
+
+  <text x="80" y="320"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="80" fill="#ebe1cf" font-weight="500">Dráhy a cerebellární okruhy</text>
+
+  <text x="80" y="395"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="30" fill="#9a8d7d">30 interaktivních animací z neuroanatomie</text>
+
+  <text x="80" y="445"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="24" fill="#8a7e6e">Brabec, Naňka, Němcová, Petrovický · 2007–2012</text>
+
+  <text x="80" y="555"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="22" fill="#c9622e" font-weight="500">drahy.steezr.cloud</text>
+
+  <g transform="translate(1080, 290)">
+    <line x1="0" y1="-50" x2="0" y2="50" stroke="#c9622e" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="0" cy="-50" r="9" fill="#c9622e"/>
+    <circle cx="0" cy="0" r="9" fill="#c9622e"/>
+    <circle cx="0" cy="50" r="9" fill="#c9622e"/>
+  </g>
+</svg>

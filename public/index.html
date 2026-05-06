@@ -6,7 +6,21 @@
   <title>Dráhy a cerebellární okruhy</title>
   <meta name="description" content="Archiv interaktivních animací a kvízů z neuroanatomie. Originál Anatomického ústavu 1. LF UK (dr. Brabec, doc. Naňka, dr. Němcová, prof. Petrovický, 2007–2012). Senzitivní a motorické dráhy, propriocepce, cerebellární okruhy.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Dráhy a cerebellární okruhy">
+  <meta property="og:title" content="Dráhy a cerebellární okruhy">
+  <meta property="og:description" content="Archiv 30 interaktivních animací a kvízů z neuroanatomie. Anatomický ústav 1. LF UK (Brabec, Naňka, Němcová, Petrovický, 2007–2012).">
+  <meta property="og:url" content="https://drahy.steezr.cloud/">
+  <meta property="og:image" content="https://drahy.steezr.cloud/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="cs_CZ">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Dráhy a cerebellární okruhy">
+  <meta name="twitter:description" content="Archiv 30 interaktivních animací a kvízů z neuroanatomie. Anatomický ústav 1. LF UK.">
+  <meta name="twitter:image" content="https://drahy.steezr.cloud/og-image.png">
 </head>
 <body>
   <div class="container">
@@ -25,7 +39,7 @@
     </footer>
   </div>
 
-  <script src="data.js"></script>
+  <script src="/data.js"></script>
   <script>
     const root = document.getElementById("parts");
     const roman = ["I", "II", "III", "IV"];
@@ -45,7 +59,7 @@
         n++;
         const a = document.createElement("a");
         a.className = "card" + (item.quiz ? " quiz" : "");
-        a.href = `player.html?id=${encodeURIComponent(item.id)}`;
+        a.href = `/${encodeURIComponent(item.id)}`;
         a.innerHTML = `
           <span class="num">${String(n).padStart(2, "0")}</span>
           <span class="title">${item.title}</span>

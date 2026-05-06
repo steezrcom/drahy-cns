@@ -225,6 +225,41 @@ body.player-page { display: flex; flex-direction: column; min-height: 100vh; }
   height: 100%;
 }
 
+.player-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.1rem 1.75rem;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+}
+.player-nav a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: var(--text-dim);
+  max-width: 45%;
+  min-width: 0;
+}
+.player-nav .nav-label {
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  font-weight: 500;
+}
+.player-nav .nav-title {
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player-nav a:hover .nav-title { color: var(--accent); }
+.player-nav .next { text-align: right; align-items: flex-end; }
+
 .notice {
   text-align: center;
   color: var(--text-dim);
