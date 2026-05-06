@@ -2,6 +2,8 @@
 
 Web archive of an old neuroanatomy teaching project: 30 interactive SWF animations and quizzes covering the main sensory and motor pathways and cerebellar circuits. Plays in 2026 browsers via [Ruffle](https://ruffle.rs), the open-source Flash emulator (Rust + WebAssembly).
 
+Source code: <https://github.com/steezrcom/drahy-cns>. Live mirror: <https://drahy.steezr.cloud>.
+
 ## Attribution
 
 The original animations were authored 2007-2012 at the **Institute of Anatomy, 1st Faculty of Medicine, Charles University in Prague** (Anatomický ústav 1. LF UK) by:
