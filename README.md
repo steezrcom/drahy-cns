@@ -81,4 +81,8 @@ A reasonable health check is `GET /healthz` returning `ok`. URL routing is handl
 
 ## Contributing
 
-This is a small preservation project. Issues and PRs welcome on the wrapper (UI, accessibility, deployment, build). The SWF content lives upstream at `anat.lf1.cuni.cz` and isn't editable here. For content corrections (wrong label, missing slide, clinical errors), the right place is the Institute itself.
+PRs welcome on the wrapper (UI, accessibility, deploy, build). The SWF content lives upstream at `anat.lf1.cuni.cz` and isn't editable here. See [CONTRIBUTING.md](CONTRIBUTING.md) for scope and workflow.
+
+## Security
+
+Report security issues to <johnny@steezr.com>. See [SECURITY.md](SECURITY.md).
