@@ -85,4 +85,4 @@ PRs welcome on the wrapper (UI, accessibility, deploy, build). The SWF content l
 
 ## Security
 
-Report security issues to <johnny@steezr.com>. See [SECURITY.md](SECURITY.md).
+Report security issues to <security@steezr.com>. See [SECURITY.md](SECURITY.md).

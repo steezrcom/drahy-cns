@@ -1,6 +1,6 @@
 # Security
 
-Report security issues to <johnny@steezr.com>. Please don't open a public issue first.
+Report security issues to <security@steezr.com>. Please don't open a public issue first.
 
 ## In scope
 
